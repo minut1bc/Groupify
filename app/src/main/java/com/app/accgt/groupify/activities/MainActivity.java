@@ -1,4 +1,4 @@
-package com.app.accgt.groupify;
+package com.app.accgt.groupify.activities;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -7,24 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.app.accgt.groupify.models.Event;
-import com.app.accgt.groupify.models.Location;
+import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.User;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
