@@ -1,9 +1,9 @@
 package com.app.accgt.groupify.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,7 +14,6 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Arrays;
 
@@ -25,21 +24,24 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
 
     private FirebaseFirestore db;
+    private Intent eventsIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        eventsIntent = new Intent(this, EventsActivity.class);
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         if (auth.getCurrentUser() != null) {
             // signed in
-            String token = FirebaseInstanceId.getInstance().getToken();
             User user = new User(auth.getCurrentUser().getUid());
             db.collection("users").document().set(user);
             Log.d(TAG, "Signed in as " + auth.getCurrentUser().getDisplayName());
 
+            startActivity(eventsIntent);
         } else {
             // not signed in
             startActivityForResult(
@@ -68,13 +70,12 @@ public class MainActivity extends AppCompatActivity {
                     // get the current user
                     FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                    // get the FCM token
-                    String token = FirebaseInstanceId.getInstance().getToken();
-
                     // save the user info in the database to /users/$UID/
                     User user = new User(fbUser.getUid());
                     db.collection("users").document().set(user);
                     Log.d(TAG, "Signed in with UID " + user.getUid());
+
+                    startActivity(eventsIntent);
 
                 } else {
                     // Sign in failed, check response for error code
