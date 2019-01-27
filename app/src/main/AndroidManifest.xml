@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.FeedActivity" />
+        <activity
+            android:name=".activities.FeedActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activities.EventActivity"
             android:parentActivityName=".activities.FeedActivity" />
