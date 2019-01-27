@@ -11,14 +11,22 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <Button
+    <!--<Button-->
+        <!--android:id="@+id/add_event_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:text="Sugi pula si mori"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent" />-->
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Sugi pula si mori"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:src="@drawable/ic_add_white_24dp"/>
 
 </android.support.constraint.ConstraintLayout>

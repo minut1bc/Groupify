@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,8 +28,7 @@ public class FeedActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private Context context;
-    private Button addEventButton;
+    private FloatingActionButton addEventButton;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -40,8 +40,6 @@ public class FeedActivity extends AppCompatActivity {
         addEventButton = findViewById(R.id.add_event_button);
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-
-        context = this;
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -65,7 +63,7 @@ public class FeedActivity extends AppCompatActivity {
                 holder.eventItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, EventActivity.class);
+                        Intent intent = new Intent(holder.name.getContext(), EventActivity.class);
                         String eventId = getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
                         intent.putExtra("eventId", eventId);
                         startActivity(intent);
@@ -88,7 +86,7 @@ public class FeedActivity extends AppCompatActivity {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, AddEventActivity.class);
+                Intent intent = new Intent(v.getContext(), AddEventActivity.class);
                 startActivity(intent);
             }
         });
