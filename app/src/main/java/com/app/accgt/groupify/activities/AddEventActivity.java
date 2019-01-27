@@ -20,7 +20,6 @@ import android.widget.TimePicker;
 import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.Event;
 import com.app.accgt.groupify.models.Location;
-import com.app.accgt.groupify.models.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -30,7 +29,6 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -38,7 +36,7 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
     private static final String TAG = FeedActivity.class.getSimpleName();
 
     private static final int PLACE_PICKER_REQUEST = 1;
-    GoogleApiClient googleApiClient;
+
     private EditText addEventName;
     private EditText addEventDescription;
     private TextView addEventLocation;
@@ -48,6 +46,7 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
     private Context context;
     private Event event;
     private Button createEvent;
+    GoogleApiClient googleApiClient;
     private Location location = new Location();
 
     @Override
@@ -100,7 +99,6 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
                 event.setDuration(Integer.parseInt(addEventDuration.getText().toString()));
                 event.setTimestamp(new GregorianCalendar().getTime());
                 event.setLocation(location);
-                event.setUsers(new ArrayList<User>());
                 FirebaseFirestore.getInstance().collection("events").document().set(event);
                 finish();
             }

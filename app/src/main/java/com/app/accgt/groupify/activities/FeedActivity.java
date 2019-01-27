@@ -1,6 +1,5 @@
 package com.app.accgt.groupify.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.Event;
@@ -57,8 +55,9 @@ public class FeedActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull final EventHolder holder, final int position, @NonNull Event model) {
                 holder.name.setText(model.getName());
                 holder.participantsNumber.setText(String.valueOf(model.getUsers().size()));
-                holder.duration.setText(String.valueOf(model.getDuration()));
-                Log.d(TAG, "Bound event " + model.getName());
+                holder.duration.setText(String.valueOf(model.getDuration()) + " minutes");
+                holder.location.setText(model.getLocation().getName());
+                holder.time.setText(model.getTime().toString());
 
                 holder.eventItem.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -69,6 +68,8 @@ public class FeedActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+
+                Log.d(TAG, "Bound event " + model.getName());
             }
 
             @NonNull

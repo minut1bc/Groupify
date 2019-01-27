@@ -13,11 +13,16 @@ public class EventHolder extends RecyclerView.ViewHolder {
     public TextView name;
     public TextView participantsNumber;
     public TextView duration;
+    public TextView location;
+    public TextView time;
+
     public EventHolder(@NonNull View itemView) {
         super(itemView);
         eventItem = itemView.findViewById(R.id.event_item);
         name = itemView.findViewById(R.id.event_name_item);
         participantsNumber = itemView.findViewById(R.id.event_participants_number_item);
         duration = itemView.findViewById(R.id.event_duration_item);
+        location = itemView.findViewById(R.id.event_location_item);
+        time = itemView.findViewById(R.id.event_time_item);
     }
 }

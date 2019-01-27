@@ -1,5 +1,6 @@
 package com.app.accgt.groupify.models;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
@@ -12,12 +13,12 @@ public class Event {
     private Date timestamp;
     private Date time;
     private int duration;
-    private List<User> users;
+    private List<FirebaseUser> users;
 
     public Event() {
     }
 
-    public Event(String name, String description, Location location, Date time, int duration, List<User> users) {
+    public Event(String name, String description, Location location, Date time, int duration, List<FirebaseUser> users) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -75,11 +76,11 @@ public class Event {
         this.duration = duration;
     }
 
-    public List<User> getUsers() {
+    public List<FirebaseUser> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<FirebaseUser> users) {
         this.users = users;
     }
 }

@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             User user = new User(auth.getCurrentUser().getUid());
             db.collection("users").document().set(user);
             Log.d(TAG, "Signed in as " + auth.getCurrentUser().getDisplayName());
-
             startActivity(eventsIntent);
         } else {
             // not signed in
