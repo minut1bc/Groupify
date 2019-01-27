@@ -27,8 +27,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -99,6 +101,7 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
                 event.setDuration(Integer.parseInt(addEventDuration.getText().toString()));
                 event.setTimestamp(new GregorianCalendar().getTime());
                 event.setLocation(location);
+                event.setUsers(new ArrayList<FirebaseUser>());
                 FirebaseFirestore.getInstance().collection("events").document().set(event);
                 finish();
             }
