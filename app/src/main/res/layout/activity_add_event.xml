@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/event_name_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: "
+        app:layout_constraintBottom_toBottomOf="@id/event_name_edit"
+        app:layout_constraintEnd_toStartOf="@id/event_name_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/event_name_edit" />
+
+    <EditText
+        android:id="@+id/event_name_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="my event"
+        app:layout_constraintBottom_toTopOf="@id/event_description_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_name_add"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/event_description_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description: "
+        app:layout_constraintBottom_toBottomOf="@id/event_description_edit"
+        app:layout_constraintEnd_toStartOf="@id/event_description_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/event_description_edit" />
+
+    <EditText
+        android:id="@+id/event_description_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="my description"
+        app:layout_constraintBottom_toTopOf="@id/event_location_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_description_add"
+        app:layout_constraintTop_toBottomOf="@id/event_name_edit" />
+
+    <TextView
+        android:id="@+id/event_location_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location: "
+        app:layout_constraintBottom_toBottomOf="@id/event_location_edit"
+        app:layout_constraintEnd_toStartOf="@id/event_location_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/event_location_edit" />
+
+    <TextView
+        android:id="@+id/event_location_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="my location"
+        app:layout_constraintBottom_toTopOf="@id/event_time_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_location_add"
+        app:layout_constraintTop_toBottomOf="@id/event_description_edit" />
+
+    <TextView
+        android:id="@+id/event_time_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time: "
+        app:layout_constraintBottom_toBottomOf="@id/event_time_edit"
+        app:layout_constraintEnd_toStartOf="@id/event_time_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/event_time_edit" />
+
+    <TextView
+        android:id="@+id/event_time_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="my time"
+        app:layout_constraintBottom_toTopOf="@id/event_duration_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_time_add"
+        app:layout_constraintTop_toBottomOf="@id/event_location_edit" />
+
+    <TextView
+        android:id="@+id/event_duration_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Duration (minutes): "
+        app:layout_constraintBottom_toBottomOf="@id/event_duration_edit"
+        app:layout_constraintEnd_toStartOf="@id/event_description_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/event_duration_edit" />
+
+    <EditText
+        android:id="@+id/event_duration_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="my duration"
+        android:inputType="phone"
+        app:layout_constraintBottom_toTopOf="@id/create_event_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_duration_add"
+        app:layout_constraintTop_toBottomOf="@id/event_time_edit" />
+
+    <Button
+        android:id="@+id/create_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="create event"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_duration_edit" />
+
+</android.support.constraint.ConstraintLayout>

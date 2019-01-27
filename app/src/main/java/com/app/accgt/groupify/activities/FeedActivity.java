@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.Event;
@@ -27,6 +28,7 @@ public class FeedActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Context context;
+    private Button addEventButton;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -35,6 +37,7 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        addEventButton = findViewById(R.id.add_event_button);
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
@@ -81,6 +84,14 @@ public class FeedActivity extends AppCompatActivity {
         };
 
         recyclerView.setAdapter(adapter);
+
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AddEventActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
