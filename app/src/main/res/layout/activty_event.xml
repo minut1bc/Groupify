@@ -5,9 +5,12 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:id="@+id/event_name"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
         android:text="Name"
         app:layout_constraintBottom_toTopOf="@id/event_description"
@@ -16,9 +19,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:id="@+id/event_description"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
         android:text="Description"
         app:layout_constraintBottom_toTopOf="@id/event_duration"
@@ -27,9 +33,12 @@
         app:layout_constraintTop_toBottomOf="@+id/event_name" />
 
     <TextView
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:id="@+id/event_duration"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
         android:text="Duration"
         app:layout_constraintBottom_toTopOf="@id/event_location"
@@ -38,9 +47,12 @@
         app:layout_constraintTop_toBottomOf="@id/event_description" />
 
     <TextView
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:id="@+id/event_location"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
         android:text="Location"
         app:layout_constraintBottom_toTopOf="@id/event_time"
@@ -49,9 +61,12 @@
         app:layout_constraintTop_toBottomOf="@id/event_duration" />
 
     <TextView
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:id="@+id/event_time"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
         android:text="Time"
         app:layout_constraintBottom_toTopOf="@id/event_time_stamp"
@@ -60,9 +75,12 @@
         app:layout_constraintTop_toBottomOf="@id/event_location" />
 
     <TextView
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:id="@+id/event_time_stamp"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
         android:text="Time Stamp"
         app:layout_constraintBottom_toBottomOf="parent"
