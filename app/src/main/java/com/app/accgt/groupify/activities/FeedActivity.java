@@ -18,12 +18,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.Event;
 import com.app.accgt.groupify.utils.EventHolder;
+import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -34,6 +40,8 @@ public class FeedActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton addEventButton;
     private DrawerLayout drawerLayout;
+    private Button signOutButton;
+    private TextView userEmail;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -42,20 +50,23 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        signOutButton = findViewById(R.id.sign_out);
         addEventButton = findViewById(R.id.add_event_button);
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         drawerLayout = findViewById(R.id.drawer_view);
+        userEmail = findViewById(R.id.user_email);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
-
                 return true;
             }
         });
+
+        userEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -113,6 +124,24 @@ public class FeedActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AddEventActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthUI.getInstance()
+                        .signOut(FeedActivity.this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now signed out
+                                // do something (open a new activity)
+                                // ...
+
+                                finish();
+                            }
+                        });
             }
         });
     }

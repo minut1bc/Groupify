@@ -24,6 +24,7 @@
         </activity>
         <activity
             android:name=".activities.FeedActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activities.EventActivity"
