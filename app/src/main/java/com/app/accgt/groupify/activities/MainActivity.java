@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(false)
+                            .setIsSmartLockEnabled(true)
+                            .setLogo(R.mipmap.ic_launcher_groupify)
                             .setAvailableProviders(Arrays.asList(
                                     new AuthUI.IdpConfig.EmailBuilder().build(),
                                     new AuthUI.IdpConfig.GoogleBuilder().build()))
