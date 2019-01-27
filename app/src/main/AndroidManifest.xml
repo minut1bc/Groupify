@@ -16,10 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.EventsActivity" />
+        <activity android:name=".activities.FeedActivity" />
         <activity
             android:name=".activities.EventActivity"
-            android:parentActivityName=".activities.EventsActivity" />
+            android:parentActivityName=".activities.FeedActivity" />
     </application>
 
 </manifest>

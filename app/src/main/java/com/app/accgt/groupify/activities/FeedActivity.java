@@ -1,5 +1,7 @@
 package com.app.accgt.groupify.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,21 +21,24 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class EventsActivity extends AppCompatActivity {
-    private static final String TAG = EventsActivity.class.getSimpleName();
+public class FeedActivity extends AppCompatActivity {
+    private static final String TAG = FeedActivity.class.getSimpleName();
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private Context context;
 
     private FirestoreRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_feed);
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
+
+        context = this;
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -48,11 +53,21 @@ public class EventsActivity extends AppCompatActivity {
         Log.d(TAG, "Creating adapter");
         adapter = new FirestoreRecyclerAdapter<Event, EventHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull EventHolder holder, int position, @NonNull Event model) {
+            protected void onBindViewHolder(@NonNull final EventHolder holder, final int position, @NonNull Event model) {
                 holder.name.setText(model.getName());
                 holder.participantsNumber.setText(String.valueOf(model.getUsers().size()));
                 holder.duration.setText(String.valueOf(model.getDuration()));
                 Log.d(TAG, "Bound event " + model.getName());
+
+                holder.eventItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, EventActivity.class);
+                        String eventId = getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
+                        intent.putExtra("eventId", eventId);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @NonNull

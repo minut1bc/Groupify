@@ -4,6 +4,6 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:shape="rectangle">
-    <solid android:color="#FFFFFF" />
+    <solid android:color="@color/eventBackground" />
     <corners android:radius="30dp" />
 </shape>
