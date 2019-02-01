@@ -1,15 +1,15 @@
 package com.app.accgt.groupify.utils;
 
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.accgt.groupify.R;
 
 public class EventHolder extends RecyclerView.ViewHolder {
-    public ConstraintLayout eventItem;
+    public LinearLayout eventItem;
     public TextView name;
     public TextView participantsNumber;
     public TextView duration;

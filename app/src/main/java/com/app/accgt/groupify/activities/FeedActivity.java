@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.app.accgt.groupify.R;
@@ -40,8 +39,8 @@ public class FeedActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton addEventButton;
     private DrawerLayout drawerLayout;
-    private Button signOutButton;
     private TextView userEmail;
+    private View navHeader;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -50,21 +49,70 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        signOutButton = findViewById(R.id.sign_out);
         addEventButton = findViewById(R.id.add_event_button);
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        drawerLayout = findViewById(R.id.drawer_view);
-        userEmail = findViewById(R.id.user_email);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                menuItem.setChecked(true);
-                drawerLayout.closeDrawers();
-                return true;
-            }
-        });
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        navHeader = navigationView.getHeaderView(0);
+        userEmail = navHeader.findViewById(R.id.user_email);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.sign_out:
+                                AuthUI.getInstance()
+                                        .signOut(FeedActivity.this)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                // user is now signed out
+                                                // do something (open a new activity)
+                                                // ...
+
+                                                finish();
+                                            }
+                                        });
+                                break;
+                        }
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        drawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+
+        drawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        // Respond when the drawer is opened
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
 
         userEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
@@ -89,7 +137,7 @@ public class FeedActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull final EventHolder holder, final int position, @NonNull Event model) {
                 holder.name.setText(model.getName());
-                holder.participantsNumber.setText(String.valueOf(model.getUsers().size()));
+                holder.participantsNumber.setText(String.valueOf(model.getUsers().size()) + " people");
                 holder.duration.setText(String.valueOf(model.getDuration()) + " minutes");
                 holder.location.setText(model.getLocation().getName());
                 holder.time.setText(model.getTime().toString());
@@ -124,24 +172,6 @@ public class FeedActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AddEventActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuthUI.getInstance()
-                        .signOut(FeedActivity.this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // user is now signed out
-                                // do something (open a new activity)
-                                // ...
-
-                                finish();
-                            }
-                        });
             }
         });
     }

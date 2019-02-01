@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.Event;
@@ -96,16 +97,52 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event.setName(addEventName.getText().toString());
-                event.setDescription(addEventDescription.getText().toString());
-                event.setDuration(Integer.parseInt(addEventDuration.getText().toString()));
-                event.setTimestamp(new GregorianCalendar().getTime());
-                event.setLocation(location);
-                event.setUsers(new ArrayList<FirebaseUser>());
-                FirebaseFirestore.getInstance().collection("events").document().set(event);
-                finish();
+                if (allFieldsValid()) {
+                    event.setName(addEventName.getText().toString());
+                    event.setDescription(addEventDescription.getText().toString());
+                    event.setDuration(Integer.parseInt(addEventDuration.getText().toString()));
+                    event.setTimestamp(new GregorianCalendar().getTime());
+                    event.setLocation(location);
+                    event.setUsers(new ArrayList<FirebaseUser>());
+                    FirebaseFirestore.getInstance().collection("events").document().set(event);
+                    finish();
+                }
             }
         });
+    }
+
+    private boolean allFieldsValid() {
+        boolean valid = true;
+        String toastMessage = "";
+        if (addEventName.getText().toString().equals("")) {
+            toastMessage = "Please insert an event name";
+            valid = false;
+        } else if (addEventDescription.getText().toString().equals("")) {
+            toastMessage = "Please insert an event description";
+            valid = false;
+        } else if (addEventLocation.getText().toString().equals("my location")) {
+            toastMessage = "Please pick an event location";
+            valid = false;
+        } else if (addEventTime.getText().toString().equals("my time")) {
+            toastMessage = "Please pick an event time";
+            valid = false;
+        } else if (addEventDuration.getText().toString().equals("")) {
+            toastMessage = "Please insert a numeric integer value for the duration";
+            valid = false;
+        } else if (!addEventDuration.getText().toString().equals("")) {
+            try {
+                Integer.parseInt(addEventDuration.getText().toString());
+            } catch (NumberFormatException exception) {
+                toastMessage = "Please insert a numeric integer value for the duration";
+                valid = false;
+            }
+        }
+
+        if (!valid) {
+            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        }
+
+        return valid;
     }
 
     public void showDateTimePicker() {
