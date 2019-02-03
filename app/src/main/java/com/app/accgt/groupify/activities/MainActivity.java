@@ -1,5 +1,6 @@
 package com.app.accgt.groupify.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,15 +24,18 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
     private static final int RC_SIGN_IN = 1;
 
+    private Context context;
     private FirebaseFirestore db;
-    private Intent eventsIntent;
+    private Intent feedIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        eventsIntent = new Intent(this, FeedActivity.class);
+        context = this;
+
+        feedIntent = new Intent(context, FeedActivity.class);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             User user = new User(auth.getCurrentUser().getUid());
             db.collection("users").document().set(user);
             Log.d(TAG, "Signed in as " + auth.getCurrentUser().getDisplayName());
-            startActivity(eventsIntent);
+            startActivity(feedIntent);
         } else {
             // not signed in
             startActivityForResult(
@@ -70,17 +74,19 @@ public class MainActivity extends AppCompatActivity {
                     // get the current user
                     FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                    // save the user info in the database to /users/$UID/
-                    User user = new User(fbUser.getUid());
-                    db.collection("users").document().set(user);
-                    Log.d(TAG, "Signed in with UID " + user.getUid());
+                    if (fbUser != null) {
+                        // save the user info in the database to /users/$UID/
+                        User user = new User(fbUser.getUid());
+                        db.collection("users").document().set(user);
+                        Log.d(TAG, "Signed in with UID " + user.getUid());
 
-                    startActivity(eventsIntent);
-
+                        startActivity(feedIntent);
+                    }
                 } else {
                     // Sign in failed, check response for error code
-                    if (response != null)
-                        Toasty.error(this, response.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                    if (response != null && response.getError() != null) {
+                        Toasty.error(context, response.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
         }

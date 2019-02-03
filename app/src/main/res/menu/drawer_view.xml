@@ -3,4 +3,14 @@
     <item
         android:id="@+id/sign_out"
         android:title="Sign Out" />
+    <item
+        android:id="@+id/verify_email"
+        android:title="Verify Email" />
+    <item
+        android:id="@+id/request_password_reset"
+        android:title="Request Password Reset" />
+
+    <item
+        android:id="@+id/delete_user"
+        android:title="Delete User" />
 </menu>

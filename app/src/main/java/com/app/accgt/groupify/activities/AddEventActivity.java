@@ -47,9 +47,9 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
     private EditText addEventDuration;
     private Calendar date;
     private Context context;
-    private Event event;
+    private Event event = new Event();
     private Button createEvent;
-    GoogleApiClient googleApiClient;
+    private GoogleApiClient googleApiClient;
     private Location location = new Location();
 
     @Override
@@ -58,13 +58,16 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
         setContentView(R.layout.activity_add_event);
 
         context = this;
+
         googleApiClient = new GoogleApiClient
                 .Builder(context)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this).build();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         addEventName = findViewById(R.id.event_name_edit);
         addEventDescription = findViewById(R.id.event_description_edit);
@@ -72,8 +75,6 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
         addEventTime = findViewById(R.id.event_time_edit);
         addEventDuration = findViewById(R.id.event_duration_edit);
         createEvent = findViewById(R.id.create_event_button);
-
-        event = new Event();
 
         addEventTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +105,7 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
                     event.setTimestamp(new GregorianCalendar().getTime());
                     event.setLocation(location);
                     event.setUsers(new ArrayList<FirebaseUser>());
+                    Log.d(TAG, "Event created");
                     FirebaseFirestore.getInstance().collection("events").document().set(event);
                     finish();
                 }
@@ -156,7 +158,6 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         date.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         date.set(Calendar.MINUTE, minute);
-                        Log.v(TAG, "The chosen one " + date.getTime());
                         addEventTime.setText(date.getTime().toString());
                         event.setTime(date.getTime());
                     }
@@ -176,23 +177,16 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(this, data);
                 StringBuilder stBuilder = new StringBuilder();
-                String placename = String.format("%s", place.getName());
+                String placeName = String.format("%s", place.getName());
                 String latitude = String.valueOf(place.getLatLng().latitude);
                 String longitude = String.valueOf(place.getLatLng().longitude);
                 String address = String.format("%s", place.getAddress());
-                stBuilder.append("Name: ");
-                stBuilder.append(placename);
-                stBuilder.append("\n");
-                stBuilder.append("Latitude: ");
-                stBuilder.append(latitude);
-                stBuilder.append("\n");
-                stBuilder.append("Logitude: ");
-                stBuilder.append(longitude);
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(address);
+                stBuilder.append("Name: ").append(placeName).append("\n")
+                        .append("Latitude: ").append(latitude).append("\n")
+                        .append("Longitude: ").append(longitude).append("\n")
+                        .append("Address: ").append(address);
                 addEventLocation.setText(stBuilder.toString());
-                location = new Location(placename, Double.valueOf(latitude), Double.valueOf(longitude));
+                location = new Location(placeName, Double.valueOf(latitude), Double.valueOf(longitude));
             }
         }
     }

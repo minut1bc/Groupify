@@ -47,16 +47,18 @@ public class EventActivity extends AppCompatActivity {
 
         final String eventId = getIntent().getStringExtra("eventId");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("events").document(eventId);
+        final DocumentReference docRef = db.collection("events").document(eventId);
         Source source = Source.CACHE;
         docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    event = document.toObject(Event.class);
-                    populateEvent();
-                    Log.d(TAG, "Cached document data " + document.getData());
+                    if (document != null) {
+                        event = document.toObject(Event.class);
+                        populateEvent();
+                        Log.d(TAG, "Cached document data " + document.getData());
+                    }
                 } else {
                     Log.d(TAG, "Cached get failed: ", task.getException());
                 }
