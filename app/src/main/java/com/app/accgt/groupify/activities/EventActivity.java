@@ -21,7 +21,6 @@ public class EventActivity extends AppCompatActivity {
 
     private Event event;
 
-    private TextView eventName;
     private TextView eventDescription;
     private TextView eventDuration;
     private TextView eventLocation;
@@ -38,7 +37,6 @@ public class EventActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        eventName = findViewById(R.id.event_name);
         eventDescription = findViewById(R.id.event_description);
         eventDuration = findViewById(R.id.event_duration);
         eventLocation = findViewById(R.id.event_location);
@@ -46,10 +44,10 @@ public class EventActivity extends AppCompatActivity {
         eventTimeStamp = findViewById(R.id.event_time_stamp);
 
         final String eventId = getIntent().getStringExtra("eventId");
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentReference docRef = db.collection("events").document(eventId);
-        Source source = Source.CACHE;
-        docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        final DocumentReference docRef = FirebaseFirestore.getInstance()
+                .collection("events")
+                .document(eventId);
+        docRef.get(Source.CACHE).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -67,7 +65,9 @@ public class EventActivity extends AppCompatActivity {
     }
 
     private void populateEvent() {
-        eventName.setText(event.getName());
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(event.getName());
+        }
         eventDescription.setText(event.getDescription());
         eventDuration.setText(String.valueOf(event.getDuration()));
         eventLocation.setText(event.getLocation().getName());

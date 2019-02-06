@@ -27,7 +27,10 @@ import android.widget.Toast;
 
 import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.Event;
+import com.app.accgt.groupify.utils.EmailDialogFragment;
 import com.app.accgt.groupify.utils.EventHolder;
+import com.app.accgt.groupify.utils.PasswordDialogFragment;
+import com.app.accgt.groupify.utils.ReAuthenticateDialogFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -45,6 +48,10 @@ public class FeedActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private FirebaseUser fbUser;
     private FirestoreRecyclerAdapter adapter;
+    private EmailDialogFragment emailDialogFragment;
+    private PasswordDialogFragment passwordDialogFragment;
+    private ReAuthenticateDialogFragment reAuthenticateDialogFragment;
+    private TextView userEmail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +59,9 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         context = this;
+        emailDialogFragment = new EmailDialogFragment();
+        passwordDialogFragment = new PasswordDialogFragment();
+        reAuthenticateDialogFragment = new ReAuthenticateDialogFragment();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         FloatingActionButton addEventButton = findViewById(R.id.add_event_button);
@@ -61,7 +71,7 @@ public class FeedActivity extends AppCompatActivity {
 
         View navHeader = navigationView.getHeaderView(0);
         MenuItem verifyEmailItem = navigationView.getMenu().findItem(R.id.verify_email);
-        TextView userEmail = navHeader.findViewById(R.id.user_email);
+        userEmail = navHeader.findViewById(R.id.user_email);
         ImageView verifiedCheckMark = navHeader.findViewById(R.id.verified_check_mark);
         TextView userFirstLastName = navHeader.findViewById(R.id.user_first_last_name);
 
@@ -102,9 +112,9 @@ public class FeedActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull final EventHolder holder, final int position, @NonNull Event model) {
                 holder.name.setText(model.getName());
-                String participantsText = String.valueOf(model.getUsers().size() + " people");
+                String participantsText = model.getUsers().size() + " people";
                 holder.participantsNumber.setText(participantsText);
-                String durationText = String.valueOf(model.getDuration()) + " minutes";
+                String durationText = model.getDuration() + " minutes";
                 holder.duration.setText(durationText);
                 holder.location.setText(model.getLocation().getName());
                 holder.time.setText(model.getTime().toString());
@@ -150,14 +160,38 @@ public class FeedActivity extends AppCompatActivity {
                             case R.id.sign_out:
                                 signOut();
                                 break;
+                            case R.id.update_email:
+                                reAuthenticateDialogFragment.addOnReAuthenticateSuccessListener(new ReAuthenticateDialogFragment.OnReAuthenticateSuccessListener() {
+                                    @Override
+                                    public void onReAuthenticateSuccess() {
+                                        emailDialogFragment.show(getSupportFragmentManager(), "Set email");
+                                    }
+                                });
+                                reAuthenticateDialogFragment.show(getSupportFragmentManager(), "Re-authenticate for set email");
+                                break;
                             case R.id.verify_email:
                                 verifyEmail();
                                 break;
-                            case R.id.request_password_reset:
+                            case R.id.update_password:
+                                reAuthenticateDialogFragment.addOnReAuthenticateSuccessListener(new ReAuthenticateDialogFragment.OnReAuthenticateSuccessListener() {
+                                    @Override
+                                    public void onReAuthenticateSuccess() {
+                                        passwordDialogFragment.show(getSupportFragmentManager(), "Set password");
+                                    }
+                                });
+                                reAuthenticateDialogFragment.show(getSupportFragmentManager(), "Re-authenticate for set password");
+                                break;
+                            case R.id.reset_password:
                                 requestPasswordReset();
                                 break;
-                            case R.id.delete_user:
-                                deleteUser();
+                            case R.id.delete_account:
+                                reAuthenticateDialogFragment.addOnReAuthenticateSuccessListener(new ReAuthenticateDialogFragment.OnReAuthenticateSuccessListener() {
+                                    @Override
+                                    public void onReAuthenticateSuccess() {
+                                        deleteUser();
+                                    }
+                                });
+                                reAuthenticateDialogFragment.show(getSupportFragmentManager(), "Re-authenticate for delete user");
                                 break;
                         }
                         // set item as selected to persist highlight
@@ -227,10 +261,12 @@ public class FeedActivity extends AppCompatActivity {
                 // do something (open a new activity)
                 // ...
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "User signed out");
+                    Log.d(TAG, "User signed out.");
                     startActivity(new Intent(context, MainActivity.class));
 
                     finish();
+                } else {
+                    Log.d(TAG, "User not signed out.");
                 }
             }
         });
@@ -244,6 +280,11 @@ public class FeedActivity extends AppCompatActivity {
                     Log.d(TAG, "Email sent.");
 
                     Toast.makeText(context, "Email sent. Log in again to apply changes.", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(TAG, "Verify email not sent.");
+
+
+                    Toast.makeText(context, "Verify email could not be sent.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -259,6 +300,10 @@ public class FeedActivity extends AppCompatActivity {
                                 Log.d(TAG, "Email sent.");
 
                                 Toast.makeText(context, "Email sent.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Log.d(TAG, "Password reset email not sent.");
+
+                                Toast.makeText(context, "Email could not be sent.", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -271,12 +316,22 @@ public class FeedActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "User account deleted");
+                    Log.d(TAG, "User account deleted.");
                     startActivity(new Intent(context, MainActivity.class));
 
                     finish();
+                } else {
+                    Log.d(TAG, "User account not deleted.");
+
+                    Toast.makeText(context, "User account could not be deleted", Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    public void updateEmailTextView() {
+        if (fbUser.getEmail() != null) {
+            userEmail.setText(fbUser.getEmail());
+        }
     }
 }

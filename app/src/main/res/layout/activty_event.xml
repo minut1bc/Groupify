@@ -5,41 +5,27 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/event_description"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:id="@+id/event_name"
-        android:layout_width="0dp"
-        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
-        android:text="Name"
-        app:layout_constraintBottom_toTopOf="@id/event_description"
+        android:gravity="center"
+        android:text="Description"
+        app:layout_constraintBottom_toTopOf="@id/event_duration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:id="@+id/event_description"
-        android:layout_width="0dp"
-        android:gravity="center"
-        android:background="@drawable/rounded_rectangle"
-        android:text="Description"
-        app:layout_constraintBottom_toTopOf="@id/event_duration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_name" />
-
-    <TextView
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
         android:id="@+id/event_duration"
         android:layout_width="0dp"
-        android:gravity="center"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_rectangle"
+        android:gravity="center"
         android:text="Duration"
         app:layout_constraintBottom_toTopOf="@id/event_location"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,13 +33,13 @@
         app:layout_constraintTop_toBottomOf="@id/event_description" />
 
     <TextView
+        android:id="@+id/event_location"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:id="@+id/event_location"
-        android:layout_width="0dp"
-        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
+        android:gravity="center"
         android:text="Location"
         app:layout_constraintBottom_toTopOf="@id/event_time"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,13 +47,13 @@
         app:layout_constraintTop_toBottomOf="@id/event_duration" />
 
     <TextView
+        android:id="@+id/event_time"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:id="@+id/event_time"
-        android:layout_width="0dp"
-        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
+        android:gravity="center"
         android:text="Time"
         app:layout_constraintBottom_toTopOf="@id/event_time_stamp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,13 +61,13 @@
         app:layout_constraintTop_toBottomOf="@id/event_location" />
 
     <TextView
+        android:id="@+id/event_time_stamp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:id="@+id/event_time_stamp"
-        android:layout_width="0dp"
-        android:gravity="center"
         android:background="@drawable/rounded_rectangle"
+        android:gravity="center"
         android:text="Time Stamp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
