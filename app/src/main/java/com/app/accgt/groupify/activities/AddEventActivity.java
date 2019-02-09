@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.app.accgt.groupify.R;
 import com.app.accgt.groupify.models.Event;
 import com.app.accgt.groupify.models.Location;
+import com.app.accgt.groupify.models.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -28,6 +29,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -51,6 +53,8 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
     private Button createEvent;
     private GoogleApiClient googleApiClient;
     private Location location = new Location();
+    private FirebaseUser fbUser;
+    private ArrayList<User> users = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +73,8 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+
         addEventName = findViewById(R.id.event_name_edit);
         addEventDescription = findViewById(R.id.event_description_edit);
         addEventLocation = findViewById(R.id.event_location_edit);
@@ -79,7 +85,22 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
         addEventTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDateTimePicker();
+                date = Calendar.getInstance();
+                new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        date.set(year, monthOfYear, dayOfMonth);
+                        new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                date.set(Calendar.MINUTE, minute);
+                                addEventTime.setText(date.getTime().toString());
+                                event.setTime(date.getTime());
+                            }
+                        }, date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE), false).show();
+                    }
+                }, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -99,14 +120,18 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
             @Override
             public void onClick(View v) {
                 if (allFieldsValid()) {
+                    users.add(new User(fbUser.getUid(), fbUser.getDisplayName()));
                     event.setName(addEventName.getText().toString());
                     event.setDescription(addEventDescription.getText().toString());
                     event.setDuration(Integer.parseInt(addEventDuration.getText().toString()));
                     event.setTimestamp(new GregorianCalendar().getTime());
                     event.setLocation(location);
-                    event.setUsers(new ArrayList<FirebaseUser>());
-                    Log.d(TAG, "Event created");
+                    event.setUsers(users);
+                    event.setOwner(users.get(0));
                     FirebaseFirestore.getInstance().collection("events").document().set(event);
+
+                    Log.d(TAG, "Event created");
+
                     finish();
                 }
             }
@@ -138,6 +163,9 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
                 toastMessage = "Please insert a numeric integer value for the duration";
                 valid = false;
             }
+        } else if (fbUser == null) {
+            toastMessage = "Login problem, please sign out and sign in again.";
+            valid = false;
         }
 
         if (!valid) {
@@ -145,25 +173,6 @@ public class AddEventActivity extends AppCompatActivity implements GoogleApiClie
         }
 
         return valid;
-    }
-
-    public void showDateTimePicker() {
-        date = Calendar.getInstance();
-        new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                date.set(year, monthOfYear, dayOfMonth);
-                new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        date.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        date.set(Calendar.MINUTE, minute);
-                        addEventTime.setText(date.getTime().toString());
-                        event.setTime(date.getTime());
-                    }
-                }, date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE), false).show();
-            }
-        }, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     @Override

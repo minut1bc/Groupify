@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         if (auth.getCurrentUser() != null) {
             // signed in
-            User user = new User(auth.getCurrentUser().getUid());
+            User user = new User(auth.getCurrentUser().getUid(), auth.getCurrentUser().getDisplayName());
             db.collection("users").document().set(user);
             Log.d(TAG, "Signed in as " + auth.getCurrentUser().getDisplayName());
             startActivity(feedIntent);
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (fbUser != null) {
                         // save the user info in the database to /users/$UID/
-                        User user = new User(fbUser.getUid());
+                        User user = new User(fbUser.getUid(), fbUser.getDisplayName());
                         db.collection("users").document().set(user);
                         Log.d(TAG, "Signed in with UID " + user.getUid());
 

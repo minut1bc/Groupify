@@ -11,8 +11,9 @@ import com.app.accgt.groupify.R;
 public class EventHolder extends RecyclerView.ViewHolder {
     public LinearLayout eventItem;
     public TextView name;
-    public TextView participantsNumber;
     public TextView duration;
+    public TextView owner;
+    public TextView participantsNumber;
     public TextView location;
     public TextView time;
 
@@ -20,8 +21,9 @@ public class EventHolder extends RecyclerView.ViewHolder {
         super(itemView);
         eventItem = itemView.findViewById(R.id.event_item);
         name = itemView.findViewById(R.id.event_name_item);
-        participantsNumber = itemView.findViewById(R.id.event_participants_number_item);
         duration = itemView.findViewById(R.id.event_duration_item);
+        owner = itemView.findViewById(R.id.event_owner);
+        participantsNumber = itemView.findViewById(R.id.event_participants_number_item);
         location = itemView.findViewById(R.id.event_location_item);
         time = itemView.findViewById(R.id.event_time_item);
     }

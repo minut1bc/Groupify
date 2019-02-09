@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@id/event_location_item"
+                app:layout_constraintBottom_toTopOf="@id/event_owner"
                 app:layout_constraintEnd_toStartOf="@id/event_duration_item"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -46,17 +46,28 @@
                 tools:text="Duration" />
 
             <TextView
+                android:id="@+id/event_owner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/event_participants_number_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/event_name_item"
+                tools:text="Owner" />
+
+            <TextView
                 android:id="@+id/event_participants_number_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
                 android:textSize="12sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toTopOf="@id/event_location_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_name_item"
+                app:layout_constraintTop_toBottomOf="@+id/event_owner"
                 tools:text="participantsNumber" />
 
             <TextView
@@ -69,7 +80,7 @@
                 app:layout_constraintBottom_toTopOf="@id/event_time_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/event_name_item"
+                app:layout_constraintTop_toBottomOf="@id/event_participants_number_item"
                 tools:text="Location" />
 
             <TextView

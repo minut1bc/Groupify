@@ -112,16 +112,24 @@ public class FeedActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull final EventHolder holder, final int position, @NonNull Event model) {
                 holder.name.setText(model.getName());
-                String participantsText = model.getUsers().size() + " people";
-                holder.participantsNumber.setText(participantsText);
+
                 String durationText = model.getDuration() + " minutes";
                 holder.duration.setText(durationText);
+
+                String ownerText = "Created by: " + model.getOwner().getName();
+                holder.owner.setText(ownerText);
+
+                String participantsText = model.getUsers().size() + " people";
+                holder.participantsNumber.setText(participantsText);
+
                 holder.location.setText(model.getLocation().getName());
+
                 holder.time.setText(model.getTime().toString());
 
                 holder.eventItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         Intent intent = new Intent(context, EventActivity.class);
                         String eventId = getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
                         intent.putExtra("eventId", eventId);
@@ -333,5 +341,10 @@ public class FeedActivity extends AppCompatActivity {
         if (fbUser.getEmail() != null) {
             userEmail.setText(fbUser.getEmail());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // The only way back from the feed activity is signing out
     }
 }
